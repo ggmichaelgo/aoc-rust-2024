@@ -38,20 +38,16 @@ fn part_two(file_path: &str) {
 
     for line in reader.lines() {
         let line: String = line.unwrap();
+        
         let num_list: Vec<i32> = line
             .split_ascii_whitespace()
             .map(|e| e.parse::<i32>().unwrap())
             .collect();
 
         left_list.push(num_list[0]);
-        let right = num_list[1];
 
-        if !right_list.contains_key(&right) {
-            right_list.insert(right, 1);
-        } else {
-            let count = right_list.get_mut(&right).unwrap();
-            *count += 1;
-        }
+        let count = right_list.entry(num_list[1]).or_insert(0);
+        *count += 1;
     }
     let total = left_list
         .iter()
