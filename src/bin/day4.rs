@@ -1,7 +1,11 @@
 #![allow(dead_code)]
 
 use lazy_static::lazy_static;
-use std::{fs::File, io::BufRead, time::Instant};
+use std::{
+    fs::File,
+    io::BufRead,
+    time::{Duration, Instant},
+};
 
 lazy_static! {
     static ref DIRECTION_LIST: Vec<(i32, i32)> = vec![
@@ -111,9 +115,11 @@ fn part_two(file_path: &str) {
         map.push(line);
     }
 
-    for (y, line) in map.iter().enumerate() {
-        for (x, c) in line.chars().enumerate() {
-            if c == 'A' {
+    let x_edge = map[0].len() - 1;
+
+    for (y, line) in map.iter().enumerate().skip(1) {
+        for (x, c) in line.chars().enumerate().skip(1) {
+            if x < x_edge && c == 'A' {
                 if check_cross_mas(y as i32, x as i32, &map) {
                     total += 1;
                 }
@@ -125,11 +131,14 @@ fn part_two(file_path: &str) {
 }
 
 fn main() {
-    let start = Instant::now();
+    let mut total = Duration::new(0, 0);
+    for _ in 0..1000 {
+        let start = Instant::now();
+        part_one("input");
+        part_two("input");
 
-    part_one("input");
-    part_two("input");
-
-    let duration = start.elapsed();
-    println!("Time elapsed: {:?}", duration);
+        let duration = start.elapsed();
+        total += duration;
+    }
+    println!("Average Time elapsed: {:?}", total / 1000);
 }
