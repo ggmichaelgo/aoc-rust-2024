@@ -23,6 +23,13 @@ lazy_static! {
         (1, -1), // left down
         (1, 1), // right down
     ];
+
+    static ref POSSIBLE_CROSS_MAS: Vec<Vec<char>> = vec![
+        vec!['M', 'M', 'S', 'S'],
+        vec!['S', 'S', 'M', 'M'],
+        vec!['M', 'S', 'M', 'S'],
+        vec!['S', 'M', 'S', 'M'],
+    ];
 }
 
 fn check_xmas(y: i32, x: i32, dx: i32, dy: i32, map: &Vec<String>) -> bool {
@@ -83,6 +90,7 @@ fn check_cross_mas(y: i32, x: i32, map: &Vec<String>) -> bool {
         let cy = y + dy;
         let cx = x + dx;
 
+        // range check
         if cy < 0 || cy >= map.len() as i32 || cx < 0 || cx >= map[cy as usize].len() as i32 {
             return false;
         }
@@ -90,10 +98,7 @@ fn check_cross_mas(y: i32, x: i32, map: &Vec<String>) -> bool {
         corner_chars.push(map[cy as usize].chars().nth(cx as usize).unwrap());
     }
 
-    corner_chars == vec!['M', 'M', 'S', 'S']
-        || corner_chars == vec!['S', 'S', 'M', 'M']
-        || corner_chars == vec!['M', 'S', 'M', 'S']
-        || corner_chars == vec!['S', 'M', 'S', 'M']
+    POSSIBLE_CROSS_MAS.contains(&corner_chars)
 }
 
 fn part_two(file_path: &str) {
