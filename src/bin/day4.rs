@@ -19,9 +19,9 @@ lazy_static! {
 
     static ref CORNER_DIRECTION: Vec<(i32, i32)> = vec![
         (-1, -1), // left up
-        (-1, 1), // right up
-        (1, -1), // left down
-        (1, 1), // right down
+        (-1, 1),  // right up
+        (1, -1),  // left down
+        (1, 1),   // right down
     ];
 
     static ref POSSIBLE_CROSS_MAS: Vec<Vec<char>> = vec![
@@ -48,7 +48,6 @@ fn check_xmas(y: i32, x: i32, dx: i32, dy: i32, map: &Vec<String>) -> bool {
         }
 
         i += 1;
-
         y += dy;
         x += dx;
     }
@@ -60,7 +59,7 @@ fn part_one(file_path: &str) {
     let file = File::open(file_path).unwrap();
     let reader = std::io::BufReader::new(file);
     let mut total = 0;
-    let mut map = Vec::new();
+    let mut map = Vec::with_capacity(140);
 
     for line in reader.lines() {
         let line: String = line.unwrap();
@@ -83,7 +82,7 @@ fn part_one(file_path: &str) {
 }
 
 fn check_cross_mas(y: i32, x: i32, map: &Vec<String>) -> bool {
-    let mut corner_chars = Vec::new();
+    let mut corner_chars = Vec::with_capacity(4);
 
     for i in 0..CORNER_DIRECTION.len() {
         let (dy, dx) = CORNER_DIRECTION[i];
@@ -105,7 +104,7 @@ fn part_two(file_path: &str) {
     let file = File::open(file_path).unwrap();
     let reader = std::io::BufReader::new(file);
     let mut total = 0;
-    let mut map = Vec::new();
+    let mut map = Vec::with_capacity(140);
 
     for line in reader.lines() {
         let line: String = line.unwrap();
