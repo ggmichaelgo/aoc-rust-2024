@@ -38,7 +38,7 @@ fn part_two(file_path: &str) {
 
     for line in reader.lines() {
         let line: String = line.unwrap();
-        
+
         let num_list: Vec<i32> = line
             .split_ascii_whitespace()
             .map(|e| e.parse::<i32>().unwrap())
@@ -59,7 +59,7 @@ fn part_two(file_path: &str) {
 fn main() {
     let start = Instant::now();
 
-    // part_one("input");
+    part_one("input");
     part_two("input");
 
     let duration = start.elapsed();
