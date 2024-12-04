@@ -36,7 +36,7 @@ lazy_static! {
     ];
 }
 
-fn check_xmas(y: i32, x: i32, dx: i32, dy: i32, map: &Vec<String>) -> bool {
+fn check_xmas(y: i32, x: i32, dx: i32, dy: i32, map: &Vec<Vec<char>>) -> bool {
     let mut y = y;
     let mut x = x;
     let mut i = 0;
@@ -47,7 +47,7 @@ fn check_xmas(y: i32, x: i32, dx: i32, dy: i32, map: &Vec<String>) -> bool {
             return false;
         }
 
-        if XMAS[i] != map[y as usize].chars().nth(x as usize).unwrap() {
+        if XMAS[i] != map[y as usize][x as usize] {
             return false;
         }
 
@@ -63,16 +63,16 @@ fn part_one(file_path: &str) {
     let file = File::open(file_path).unwrap();
     let reader = std::io::BufReader::new(file);
     let mut total = 0;
-    let mut map = Vec::with_capacity(140);
+    let mut map: Vec<Vec<char>> = Vec::with_capacity(140);
 
     for line in reader.lines() {
         let line: String = line.unwrap();
-        map.push(line);
+        map.push(line.chars().collect());
     }
 
     for (y, line) in map.iter().enumerate() {
-        for (x, c) in line.chars().enumerate() {
-            if c == 'X' {
+        for (x, c) in line.iter().enumerate() {
+            if *c == 'X' {
                 for (dx, dy) in DIRECTION_LIST.iter() {
                     if check_xmas(y as i32, x as i32, *dx, *dy, &map) {
                         total += 1;
@@ -85,7 +85,7 @@ fn part_one(file_path: &str) {
     println!("PART ONE: {}", total);
 }
 
-fn check_cross_mas(y: i32, x: i32, map: &Vec<String>) -> bool {
+fn check_cross_mas(y: i32, x: i32, map: &Vec<Vec<char>>) -> bool {
     let mut corner_chars = Vec::with_capacity(4);
 
     for i in 0..CORNER_DIRECTION.len() {
@@ -98,7 +98,7 @@ fn check_cross_mas(y: i32, x: i32, map: &Vec<String>) -> bool {
             return false;
         }
 
-        corner_chars.push(map[cy as usize].chars().nth(cx as usize).unwrap());
+        corner_chars.push(map[cy as usize][cx as usize]);
     }
 
     POSSIBLE_CROSS_MAS.contains(&corner_chars)
@@ -108,18 +108,18 @@ fn part_two(file_path: &str) {
     let file = File::open(file_path).unwrap();
     let reader = std::io::BufReader::new(file);
     let mut total = 0;
-    let mut map = Vec::with_capacity(140);
+    let mut map: Vec<Vec<char>> = Vec::with_capacity(140);
 
     for line in reader.lines() {
         let line: String = line.unwrap();
-        map.push(line);
+        map.push(line.chars().collect());
     }
 
     let x_edge = map[0].len() - 1;
 
     for (y, line) in map.iter().enumerate().skip(1) {
-        for (x, c) in line.chars().enumerate().skip(1) {
-            if x < x_edge && c == 'A' {
+        for (x, c) in line.iter().enumerate().skip(1) {
+            if x < x_edge && *c == 'A' {
                 if check_cross_mas(y as i32, x as i32, &map) {
                     total += 1;
                 }
