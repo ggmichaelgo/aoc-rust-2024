@@ -132,7 +132,7 @@ fn part_two(file_path: &str) {
 
 fn main() {
     let mut total = Duration::new(0, 0);
-    for _ in 0..1000 {
+    for _ in 0..2000 {
         let start = Instant::now();
         part_one("input");
         part_two("input");
@@ -140,5 +140,5 @@ fn main() {
         let duration = start.elapsed();
         total += duration;
     }
-    println!("Average Time elapsed: {:?}", total / 1000);
+    println!("Average Time elapsed: {:?}", total / 2000);
 }
